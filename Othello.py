@@ -52,6 +52,7 @@ board[3][4],board[4][3] = 1,1
 
 
 def move(p,a):
+    global board
     px,py = p
     flag = False
 
@@ -63,7 +64,7 @@ def move(p,a):
             break
         elif board[i][py] == a:
             flag = True
-            for j in range(px+1,i):
+            for j in range(px,i+1):
                 board[j][py] = a
 
     #Left        
@@ -74,7 +75,7 @@ def move(p,a):
             break
         elif board[i][py] == a:
             flag = True
-            for j in range(i,px):
+            for j in range(i,px+1):
                 board[j][py] = a
     #Top            
     for i in range(py+1,8):
@@ -84,7 +85,7 @@ def move(p,a):
             break
         elif board[px][i] == a:
             flag = True
-            for j in range(py+1,i):
+            for j in range(py,i+1):
                 board[px][j] = a
             
         
@@ -96,7 +97,7 @@ def move(p,a):
             break
         elif board[px][i] == a:
             flag = True
-            for j in range(i,py):
+            for j in range(i,py+1):
                 board[px][j] = a
     #Top Right            
     for i, j in zip(range(px+1,8), range(py+1,8)):
@@ -106,7 +107,7 @@ def move(p,a):
             break
         elif board[i][j] == a:
             flag = True
-            for i1, j1 in zip(range(px+1,i), range(py+1,j)):
+            for i1, j1 in zip(range(px,i+1), range(py,j+1)):
                 board[i1][j1] = a
                 
     #Top Left    
@@ -117,7 +118,7 @@ def move(p,a):
             break
         elif board[i][j] == a:
             flag = True
-            for i1, j1 in zip(range(px+1,i), range(py-1,j,-1)):
+            for i1, j1 in zip(range(px,i+1), range(py,j-1,-1)):
                 board[i1][j1] = a
 
     #Bottom Right
@@ -128,7 +129,7 @@ def move(p,a):
             break
         elif board[i][j] == a:
             flag = True
-            for i1, j1 in zip(range(px-1,i,-1), range(py+1,j)):
+            for i1, j1 in zip(range(px,i-1,-1), range(py,j+1)):
                 board[i1][j1] = a
     #Bottom Left
     for i, j in zip(range(px-1,-1,-1), range(py-1,-1,-1)):
@@ -138,8 +139,26 @@ def move(p,a):
             break
         elif board[i][j] == a:
             flag = True
-            for i1, j1 in zip(range(px-1,i,-1), range(py-1,j,-1)):
+            for i1, j1 in zip(range(px,i-1,-1), range(py,j-1,-1)):
                 board[i1][j1] = a
 
     return flag
+
+def Play():
+    player = -1
+    while True:
+        pos = [int(i) for i in input("Enter location: ").split(',')]
+        pos[0],pos[1] = pos[0] - 1, pos[1] - 1
+        pos = tuple(pos)
+        while True:
+            if move(pos,player):
+                break
+            else:
+                pos = [int(i) for i in input("Invalid. Enter location: ").split(',')]
+                pos[0],pos[1] = pos[0] - 1, pos[1] - 1
+                pos = tuple(pos)
+        Print()
+        player *= -1
+    
 Print()
+Play()
