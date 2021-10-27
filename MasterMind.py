@@ -1,4 +1,5 @@
 import random as r
+import ClearScreen
 
 print('Welcome to MasterMind, The classic code-cracking game!\n')
 
@@ -99,7 +100,7 @@ def breaker():
             pegs=list('-')+pegs[:i]+pegs[i+1:]
     print(pegs)
     plist[counter-1]=pegs
-
+    ClearScreen.cls()
 
 def play():
     global codedisp,counter
@@ -116,6 +117,7 @@ def play():
         print("Attempt",counter,end=': \n')
         breaker()
         board()
+ClearScreen.cls()
 print('-'*100)
 rules()
 print('-'*100)
