@@ -18,34 +18,34 @@ for i in range(8):
         board[i].append(0)
 
 def Print():
-    print(' '*3,end='')
+    s = ""
+    s += ' '*3
     for i in range(8):
-        print((i+1),' '*3,sep='',end='')
-    print()
-    print('',ulcorner,end = '')
-    
+        s += str(i+1) + ' '*3
+    s += '\n' +" "+ ulcorner
+
     for i in range(7):
-        print(hedge*3,dplus,sep='',end='')
-    print(hedge*3,urcorner,sep='')
-    
+        s += hedge*3 + dplus
+    s += hedge*3 + urcorner + '\n'
+        
     for i in range(8):
-        print(i+1,end='')
+        s += str(i+1)
         for j in range(8):
             c = pieces[board[i][j]]
-            print(vedge,' ',c,' ',end='',sep='')
-        print(vedge)
+            s += vedge + ' ' + c +' '
+        s += vedge + '\n'
         if i == 7:
             continue
-        print(' ',end='')
-        print(rplus,hedge*3,end='',sep='')
+        s += ' '
+        s += rplus + hedge*3 
         for j in range(7):
-            print(plus,hedge*3,end='',sep='')
-        print(lplus)
-    print(' ',end='')
-    print(dlcorner,hedge*3,end='',sep='')
+            s += plus + hedge*3 
+        s += lplus + '\n'
+    s += ' ' + dlcorner + hedge*3 
     for j in range(7):
-        print(uplus,hedge*3,end='',sep='')
-    print(drcorner)
+        s += uplus + hedge*3 
+    s += drcorner
+    print(s)
 
 board[3][3],board[4][4] = -1,-1
 board[3][4],board[4][3] = 1,1
@@ -142,5 +142,4 @@ def move(p,a):
                 board[i1][j1] = a
 
     return flag
-
-
+Print()
