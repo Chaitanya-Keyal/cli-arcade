@@ -1,3 +1,5 @@
+import time
+import random
 ulcorner = '┌'
 drcorner = '┘'
 hedge = '─'
@@ -10,13 +12,9 @@ plus =  '┼'
 rplus = '├'
 uplus = '┴'
 
-pieces = {-1:"\u25CB",0:" ",1:"\u25CF"}
+pieces = {-1:"\u25CB",0:" ",1:"\u25CF"} #Symbol for the two colors
 
 board = []
-for i in range(8):
-    board.append([])
-    for j in range(8):
-        board[i].append(0)
 
 def Print():
     s = ""
@@ -47,10 +45,6 @@ def Print():
         s += uplus + hedge*3 
     s += drcorner
     print(s)
-
-board[3][3],board[4][4] = -1,-1
-board[3][4],board[4][3] = 1,1
-
 
 def move(p,a,check):
     global board
@@ -182,23 +176,63 @@ def checkValid(player):
 
     
 def Play():
-    player = -1
+
+    #Initializing Board
+    for i in range(8):
+        board.append([])
+        for j in range(8):
+            board[i].append(0)
+    board[3][3],board[4][4] = -1,-1
+    board[3][4],board[4][3] = 1,1   
+
     print('''
 Rules
 ''')
-    Print()
-    print(pieces[player],'\'s turn: ')
+    print('''You can chose any of the 3 modes:
+    1) Player vs Player
+    2) Player vs Computer
+    3) Computer vs Computer (for observation purposes)''')
     while True:
-        flag = True                    
+        try:
+            a = int(input("Enter mode: "))
+            if a > 3 or a < 1:
+                raise Exception("NO")
+            else:
+                break
+        except:
+            print("Invalid Selection!")
+
+    if a == 1:
+        Multiplayer()
+    elif a == 2:
+        Singleplayer()
+    elif a == 3:
+        Auto()
+
+def Multiplayer():
+    player = -1
+    print()
+    Print()
+    print()
+    print(pieces[player],'\'s turn: ',sep='')
+    while True:                   
         if not checkValid(player):
             if not checkValid(player*-1):
                 break
             else:
                 print(pieces[player],"has no valid moves. Turn skipped")
                 player*=-1
-                    
-        pos = [int(i) for i in input("Enter location: ").split(',')]
-        pos[0],pos[1] = pos[0] - 1, pos[1] - 1
+        while True:
+            try:            
+                pos = [int(i) for i in input("Enter location (x,y): ").split(',')]
+                if 0<pos[0]<9 and 0<pos[0]<9 and len(pos) == 2:
+                    break
+                else:
+                    raise Exception("NO")
+            except:
+                print('Invalid Input')
+                print()
+        pos[1],pos[0] = pos[0] - 1, pos[1] - 1
         pos = tuple(pos)
         if move(pos,player,False):
             Print()
@@ -208,5 +242,9 @@ Rules
             
         player *= -1
         print(pieces[player],'\'s turn: ')
+def Singleplayer():
+    pass
+def Auto():
+    pass
 
 Play()
