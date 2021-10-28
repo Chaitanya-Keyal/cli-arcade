@@ -13,15 +13,13 @@ rplus = '├'
 uplus = '┴'
 
 pieces = {-1:"\u25CB",0:" ",1:"\u25CF"} #Symbol for the two colors
+dcnt = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8}
 
 board = []
 
 def Print():
     s = ""
-    s += ' '*3
-    for i in range(8):
-        s += str(i+1) + ' '*3
-    s += '\n' +" "+ ulcorner
+    s += " "+ ulcorner
 
     for i in range(7):
         s += hedge*3 + dplus
@@ -43,12 +41,18 @@ def Print():
     s += ' ' + dlcorner + hedge*3 
     for j in range(7):
         s += uplus + hedge*3 
-    s += drcorner
+    s += drcorner + '\n'
+    s += ' '*3
+    for i in range(8):
+        s += chr(ord('A')+i) + ' '*3
     print(s)
+    print('-'*35)
 
 def move(p,a,check):
     global board
     px,py = p
+    if board[px][py] != 0:
+        return False
     flag = False
 
     #Right
@@ -173,8 +177,6 @@ def checkValid(player):
                 return True
     return False
 
-
-    
 def Play():
 
     #Initializing Board
@@ -186,12 +188,13 @@ def Play():
     board[3][4],board[4][3] = 1,1   
 
     print('''
-Rules
-''')
-    print('''You can chose any of the 3 modes:
-    1) Player vs Player
-    2) Player vs Computer
-    3) Computer vs Computer (for observation purposes)''')
+Rules:
+<Blah Blah>
+You can chose any of the 3 modes:
+1) Player vs Player
+2) Player vs Computer
+3) Computer vs Computer
+    ''') #Option 3 is for observing if the code works without the hassle of giving 64 inputs 
     while True:
         try:
             a = int(input("Enter mode: "))
@@ -211,40 +214,156 @@ Rules
 
 def Multiplayer():
     player = -1
-    print()
     Print()
-    print()
-    print(pieces[player],'\'s turn: ',sep='')
-    while True:                   
+    while True:
         if not checkValid(player):
             if not checkValid(player*-1):
                 break
             else:
                 print(pieces[player],"has no valid moves. Turn skipped")
+                print()
                 player*=-1
+
         while True:
-            try:            
-                pos = [int(i) for i in input("Enter location (x,y): ").split(',')]
-                if 0<pos[0]<9 and 0<pos[0]<9 and len(pos) == 2:
+            while True:
+                try:
+                    s = input(pieces[player]+'\'s move: ')
+                    if len(s) != 2:
+                        raise Exception("Invalid Length")
+                    elif not (1<=int(s[1])<=8):
+                        raise Exception('px Input Invalid')
+                    else:
+                        px = int(s[1]) - 1
+                        py = dcnt[s[0].upper()] - 1
+                    break
+                except:
+                    print("Invalid Input. Try again")
+                    print()
+
+            if move((px,py),player,False):
+                #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
+                print()
+                Print()
+                time.sleep(0.3)
+                break
+            else:
+                print("Not a valid move(refer rules)")
+                print()
+                continue
+        player *= -1
+    End()
+
+def Singleplayer():
+    player = -1
+    Print()
+    while True:
+        if not checkValid(player):
+            if not checkValid(player*-1):
+                break
+            else:
+                print(pieces[player],"has no valid moves. Turn skipped")
+                print()
+                player*=-1
+
+        if player == 1:
+            time.sleep(1)
+            while True:
+                px = random.randint(0,7)
+                py = random.randint(0,7)
+                if move((px,py),player,False):
+                    print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
+                    print()
+                    Print()
                     break
                 else:
-                    raise Exception("NO")
-            except:
-                print('Invalid Input')
-                print()
-        pos[1],pos[0] = pos[0] - 1, pos[1] - 1
-        pos = tuple(pos)
-        if move(pos,player,False):
-            Print()
-        else:
-            print("Not a Valid move")
+                    continue
+            player *= -1
             continue
-            
+
+        while True:
+            while True:
+                try:
+                    s = input(pieces[player]+'\'s move: ')
+                    if len(s) != 2:
+                        raise Exception("Invalid Length")
+                    elif not (1<=int(s[1])<=8):
+                        raise Exception('px Input Invalid')
+                    else:
+                        px = int(s[1]) - 1
+                        py = dcnt[s[0].upper()] - 1
+                    break
+                except:
+                    print("Invalid Input. Try again")
+                    print()
+
+            if move((px,py),player,False):
+                #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
+                print()
+                Print()
+                time.sleep(0.3)
+                break
+            else:
+                print("Not a valid move(refer rules)")
+                print()
+                continue
         player *= -1
-        print(pieces[player],'\'s turn: ')
-def Singleplayer():
-    pass
+    End()
+
 def Auto():
-    pass
+    while True:
+        try:
+            sleep = int(input("Enter time(in ms) to wait between each move: ")) / 1000
+            break
+        except:
+            print("Invalid time")
+
+    player = -1
+    Print()
+    while True:
+        if not checkValid(player):
+            if not checkValid(player*-1):
+                break
+            else:
+                print(pieces[player],"has no valid moves. Turn skipped")
+                print()
+                player*=-1
+
+        while True:
+            px = random.randint(0,7)
+            py = random.randint(0,7)
+            if move((px,py),player,False):
+                print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
+                print()
+                Print()
+                time.sleep(sleep)
+                break
+            else:
+                continue
+        player *= -1
+    End()
+    
+def End():
+    p1 = 0
+    p2 = 0
+    for i in range(8):
+        for j in range(8):
+            if board[i][j] == 1:
+                p1 += 1
+            elif board[i][j] == -1:
+                p2 += 1
+
+    if (p1+p2) != 64 == 0:
+        print("Game Ended- No Valid Moves left")
+    else:
+        print("Game Ended - Board Filled")
+    if p1 > p2:
+        print(pieces[1],'won the game')
+    elif p2 > p1:
+        print(pieces[-1],'won the game')
+    else:
+        print("Draw")
+    print()
+    print(pieces[1],'-',p1)
+    print(pieces[-1],'-',p2)
 
 Play()
