@@ -16,6 +16,18 @@ pieces = {-1:"\u25CB",0:" ",1:"\u25CF"} #Symbol for the two colors
 dcnt = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8}
 
 board = []
+marker = []
+
+def Legend(line):
+    if line == 0:
+        return (" "*5 + 'Legend')
+    elif line == 2:
+        return (' '*5 + '1. [ ] - Coin placed')
+    elif line == 3:
+        return (' '*5 + '2. < > - Coin flipped')
+    elif line == 4:
+         return (' '*5 + '3. ( ) - Coin on other side')
+    return ""
 
 def Print():
     s = ""
@@ -24,20 +36,34 @@ def Print():
     for i in range(7):
         s += hedge*3 + dplus
     s += hedge*3 + urcorner + '\n'
-        
+    line = 0
     for i in range(8):
         s += str(i+1)
         for j in range(8):
             c = pieces[board[i][j]]
-            s += vedge + ' ' + c +' '
-        s += vedge + '\n'
+            if marker[i][j] == 1:
+                s += vedge + '<' + c +'>'  #Flipped Piece Indicator
+            elif marker[i][j] == 3:
+                s += vedge + '[' + c +']'
+            elif marker[i][j] == 2:
+                s += vedge + '(' + c +')'
+            else:
+                s += vedge + ' ' + c +' '
+        s += vedge 
+        s += Legend(line)
+        s += '\n'
+        line += 1
         if i == 7:
             continue
         s += ' '
         s += rplus + hedge*3 
         for j in range(7):
             s += plus + hedge*3 
-        s += lplus + '\n'
+        s += lplus
+        s += Legend(line)
+        line += 1
+        s += '\n'
+
     s += ' ' + dlcorner + hedge*3 
     for j in range(7):
         s += uplus + hedge*3 
@@ -46,13 +72,16 @@ def Print():
     for i in range(8):
         s += chr(ord('A')+i) + ' '*3
     print(s)
-    print('-'*35)
+    print('-'*70)
 
 def move(p,a,check):
-    global board
+    global board,marker
     px,py = p
     if board[px][py] != 0:
         return False
+    for i in range(8):
+        for j in range(8):
+            marker[i][j] = 0
     flag = False
 
     #Right
@@ -66,7 +95,9 @@ def move(p,a,check):
             if check:
                 break
             for j in range(px,i+1):
+                marker[j][py] = 1
                 board[j][py] = a
+            marker[i][py] = 2
             break
 
     #Left        
@@ -80,7 +111,9 @@ def move(p,a,check):
             if check:
                 break
             for j in range(i,px+1):
+                marker[j][py] = 1
                 board[j][py] = a
+            marker[i][py] = 2
             break
         
     #Top            
@@ -94,7 +127,9 @@ def move(p,a,check):
             if check:
                 break
             for j in range(py,i+1):
+                marker[px][j] = 1
                 board[px][j] = a
+            marker[px][i] = 2
             break
             
         
@@ -109,7 +144,9 @@ def move(p,a,check):
             if check:
                 break
             for j in range(i,py+1):
+                marker[px][j] = 1
                 board[px][j] = a
+            marker[px][i] = 2
             break
         
     #Top Right            
@@ -123,7 +160,9 @@ def move(p,a,check):
             if check:
                 break
             for i1, j1 in zip(range(px,i+1), range(py,j+1)):
+                marker[i1][j1] = 1
                 board[i1][j1] = a
+            marker[i][j] = 2
             break
                 
     #Top Left    
@@ -137,7 +176,9 @@ def move(p,a,check):
             if check:
                 break
             for i1, j1 in zip(range(px,i+1), range(py,j-1,-1)):
+                marker[i1][j1] = 1
                 board[i1][j1] = a
+            marker[i][j] = 2
             break
 
     #Bottom Right
@@ -151,7 +192,9 @@ def move(p,a,check):
             if check:
                 break
             for i1, j1 in zip(range(px,i-1,-1), range(py,j+1)):
+                marker[i1][j1] = 1
                 board[i1][j1] = a
+            marker[i][j] = 2
             break
         
     #Bottom Left
@@ -165,9 +208,12 @@ def move(p,a,check):
             if check:
                 break
             for i1, j1 in zip(range(px,i-1,-1), range(py,j-1,-1)):
+                marker[i1][j1] = 1
                 board[i1][j1] = a
+            marker[i][j] = 2
             break
-
+    if flag:
+        marker[px][py] = 3       
     return flag
 
 def checkValid(player):
@@ -182,8 +228,10 @@ def Play():
     #Initializing Board
     for i in range(8):
         board.append([])
+        marker.append([])
         for j in range(8):
             board[i].append(0)
+            marker[i].append(0)
     board[3][3],board[4][4] = -1,-1
     board[3][4],board[4][3] = 1,1   
 
@@ -217,20 +265,26 @@ You can chose any of the 3 modes:
 
 def Multiplayer():
     player = -1
+    Player = 1
     Print()
     while True:
+        if player == -1:
+            Player = 1
+        else:
+            Player = 2
         if not checkValid(player):
             if not checkValid(player*-1):
                 break
             else:
-                print(pieces[player],"has no valid moves. Turn skipped")
+                print('Player %s (%s) has no valid moves. Turn skipped' % (str(Player),pieces[player]))
                 print()
                 player*=-1
+                Player = Player%2 + 1
 
         while True:
             while True:
                 try:
-                    s = input(pieces[player]+'\'s move: ')
+                    s = input('Player %s\'s (%s) move: ' % (str(Player),pieces[player]))
                     if len(s) != 2:
                         raise Exception("Invalid Length")
                     elif not (1<=int(s[1])<=8):
@@ -254,19 +308,28 @@ def Multiplayer():
                 print()
                 continue
         player *= -1
-    End()
+    End("Player 1","Player 2")
 
 def Singleplayer():
     player = -1
+    Player = 'Player'
     Print()
     while True:
+        if player == -1:
+            Player = 'Player'
+        else:
+            Player = 'Computer'
         if not checkValid(player):
             if not checkValid(player*-1):
                 break
             else:
-                print(pieces[player],"has no valid moves. Turn skipped")
+                print("%s(%s) has no valid moves. Turn skipped" % (Player,pieces[player]))
                 print()
                 player*=-1
+                if player == -1:
+                    Player = 'Player'
+                else:
+                    Player = 'Computer'
 
         if player == 1:
             time.sleep(1)
@@ -274,7 +337,7 @@ def Singleplayer():
                 px = random.randint(0,7)
                 py = random.randint(0,7)
                 if move((px,py),player,False):
-                    print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
+                    print('%s (%s) played: %s%s' % (Player,pieces[player],chr(ord('A')+py),px+1))
                     print()
                     Print()
                     break
@@ -286,7 +349,7 @@ def Singleplayer():
         while True:
             while True:
                 try:
-                    s = input(pieces[player]+'\'s move: ')
+                    s = input('%s\'s (%s) move: ' % (Player,pieces[player]))
                     if len(s) != 2:
                         raise Exception("Invalid Length")
                     elif not (1<=int(s[1])<=8):
@@ -310,7 +373,7 @@ def Singleplayer():
                 print()
                 continue
         player *= -1
-    End()
+    End("Player","Computer")
 
 def Auto():
     while True:
@@ -321,21 +384,28 @@ def Auto():
             print("Invalid time")
 
     player = -1
+    Player = 1
     Print()
     while True:
+        if player == -1:
+            Player = 1
+        else:
+            Player = 2
+
         if not checkValid(player):
             if not checkValid(player*-1):
                 break
             else:
-                print(pieces[player],"has no valid moves. Turn skipped")
+                print('Bot %s (%s) has no valid moves. Turn skipped' % (str(Player),pieces[player]))
                 print()
                 player*=-1
+                Player = Player%2 + 1
 
         while True:
             px = random.randint(0,7)
             py = random.randint(0,7)
             if move((px,py),player,False):
-                print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
+                print('Bot %s (%s) played: %s%s' % (str(Player),pieces[player],chr(ord('A')+py),px+1))
                 print()
                 Print()
                 time.sleep(sleep)
@@ -343,9 +413,9 @@ def Auto():
             else:
                 continue
         player *= -1
-    End()
+    End("Bot 1","Bot 2")
 
-def End():
+def End(e1,e2):
     p1 = 0
     p2 = 0
     for i in range(8):
@@ -360,13 +430,49 @@ def End():
     else:
         print("Game Ended - Board Filled")
     if p1 > p2:
-        print(pieces[1],'won the game')
+        print( e2,'(%s) won the game' % pieces[1])
     elif p2 > p1:
-        print(pieces[-1],'won the game')
+        print(e1,'(%s) won the game' % pieces[-1])
     else:
         print("Draw")
     print()
-    print(pieces[1],'-',p1)
-    print(pieces[-1],'-',p2)
+    print( e1,'(%s) - %s' % (pieces[-1],str(p2)))
+    print( e2,'(%s) - %s' % (pieces[1],str(p1)))
+    print()
+    for i in range(8):
+        for j in range(8):
+            marker[i][j] = 0
+    Print()
 
 Play()
+
+def Print1():
+    s = ""
+    s += " "+ ulcorner
+
+    for i in range(7):
+        s += hedge*3 + dplus
+    s += hedge*3 + urcorner + '\n'
+        
+    for i in range(8):
+        s += str(i+1)
+        for j in range(8):
+            c = pieces[board[i][j]]
+            s += vedge + ' ' + c +' '
+        s += vedge + '\n'
+        if i == 7:
+            continue
+        s += ' '
+        s += rplus + hedge*3 
+        for j in range(7):
+            s += plus + hedge*3 
+        s += lplus + '\n'
+    s += ' ' + dlcorner + hedge*3 
+    for j in range(7):
+        s += uplus + hedge*3 
+    s += drcorner + '\n'
+    s += ' '*3
+    for i in range(8):
+        s += chr(ord('A')+i) + ' '*3
+    print(s)
+    print('-'*35)
