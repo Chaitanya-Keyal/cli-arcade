@@ -189,6 +189,9 @@ def Play():
 
     print('''
 Rules:
+Enter Input in the form - <Alphabet><Number>
+Eg: A1, C3, b4, g8
+
 <Blah Blah>
 You can chose any of the 3 modes:
 1) Player vs Player
@@ -341,7 +344,7 @@ def Auto():
                 continue
         player *= -1
     End()
-    
+
 def End():
     p1 = 0
     p2 = 0
