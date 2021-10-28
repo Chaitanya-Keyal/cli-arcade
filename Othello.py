@@ -445,34 +445,3 @@ def End(e1,e2):
     Print()
 
 Play()
-
-def Print1():
-    s = ""
-    s += " "+ ulcorner
-
-    for i in range(7):
-        s += hedge*3 + dplus
-    s += hedge*3 + urcorner + '\n'
-        
-    for i in range(8):
-        s += str(i+1)
-        for j in range(8):
-            c = pieces[board[i][j]]
-            s += vedge + ' ' + c +' '
-        s += vedge + '\n'
-        if i == 7:
-            continue
-        s += ' '
-        s += rplus + hedge*3 
-        for j in range(7):
-            s += plus + hedge*3 
-        s += lplus + '\n'
-    s += ' ' + dlcorner + hedge*3 
-    for j in range(7):
-        s += uplus + hedge*3 
-    s += drcorner + '\n'
-    s += ' '*3
-    for i in range(8):
-        s += chr(ord('A')+i) + ' '*3
-    print(s)
-    print('-'*35)
