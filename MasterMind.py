@@ -9,12 +9,12 @@ def isIDLE():
    else:
       return False
 
-def newscreen(n=105):
+def newscreen(n=105,t=0.6):
     print("\nLoading",end='')
     for i in range(3):
         sys.stdout.write('.')
         sys.stdout.flush()
-        sleep(0.6)
+        sleep(t)
     print()
     if isIDLE():
         print('-'*n)
@@ -30,10 +30,14 @@ def slowprint(s,t=0.035):
       if isIDLE():
          sleep(t)
 
+def leveldisplay():
+     print('Level - ',levelname[op],'\nThe code can have the following digits:\n',valid,sep='')
+     print('-'*105)
+
 slowprint('Welcome to MasterMind, The classic code-cracking game!\n',0.02)
 print('-'*105)
-
-slowprint('''1. The code-maker (Computer) will generate a 4 digit code (X X X X) based on the chosen level.
+#MAKE SLOW
+print('''1. The code-maker (Computer) will generate a 4 digit code (X X X X) based on the chosen level.
 2. The code-breaker (You) has to break this code,
    by duplicating its exact digits and positions.
 3. After every attempt,
@@ -45,12 +49,14 @@ slowprint('''1. The code-maker (Computer) will generate a 4 digit code (X X X X)
 ''')
 print('-'*105)
 
+valid = []
 lvl = {1:6,2:7,3:8,4:9}
 levelname = {1:"Easy",2:"Medium",3:"Difficult",4:"Insane"}
 code,codedisp,plist,alist,op,counter=[],[],[],[],'',0
 def initialize():
-    global code,codedisp,plist,alist,op,counter
+    global code,codedisp,plist,alist,op,counter,valid
     code = []
+    valid = []
     codedisp = ['X','X','X','X']
     plist = []
     alist = []
@@ -60,8 +66,14 @@ def initialize():
         alist.append(['-','-','-','-']) 
     counter = 0
 
+def getKey(v):
+   for i,j in levelname.items():
+      if j==v:
+         return i
+   return -1
+
 def coder():
-    global code,lvl,op
+    global code,op,valid
     choose = '''Choose your level:
 1 - Easy
 2 - Medium
@@ -74,8 +86,12 @@ Enter your choice: '''
          slowprint(choose)
       else:
          slowprint(choose,0.004)
-      op = int(input())
-      if op not in [1,2,3,4]:
+      op = input()
+      try:
+         op = int(op)
+      except:
+         op = getKey(op.title())
+      if op not in levelname:
          print('-'*45)
          slowprint("ERROR")
          print("\n\nInvalid Choice! (Enter 1, 2, 3 or 4)")
@@ -86,6 +102,7 @@ Enter your choice: '''
     for i in range(4):
         code.append(r.choice([i for i in range(1,lvl[op])]))
     print('-'*45)
+    valid = [i for i in range(1,lvl[op])]
     slowprint("The code has been generated! Start Cracking!\n")
 
 def board_rules():
@@ -181,16 +198,48 @@ def breaker():
     pegs = ['-','-','-','-']
     while True:
         slowprint("\nYour Attempt: ",0.02)
-        attempt = [int(i) for i in input().split()]
-        if not len(attempt)==4:
-            print("\nInvalid Attempt! Please enter exactly 4 digits!")
+        ip = input()
+        temp = []
+        try:
+           for i in ip:
+              if i.isspace():
+                 continue
+              elif int(i) in [i for i in range(10)]:
+                 temp.append(int(i))
+        except:
+           print('-'*105)
+           slowprint("ERROR")
+           print("\n\nInvalid Attempt! Please enter digits only!")
+           print('-'*105)
+           sleep(1)
+           continue
+        if len(temp) != 4:
+           print('-'*105)
+           slowprint("ERROR")
+           print("\n\nInvalid Attempt! Please enter exactly 4 digits!")
+           print('-'*105)
+           sleep(1)
+           continue
+        attempt = []
+        for i in temp:
+           if i in valid:
+              attempt.append(i)
+           else:
+              break
+        if len(attempt) != 4:
+           print('-'*105)
+           slowprint("ERROR")
+           print("\n\nInvalid Attempt! Please enter valid digits according to level!")
+           print('-'*105)
+           leveldisplay()
+           sleep(1)
+           continue
         else:
-            for i in attempt:
-                if not type(i)==type(1):
-                    print("\nInvalid Attempt! Please enter digits only!")
-                    break
             alist[counter-1]=attempt
             break
+   
+    #use dictionaries
+    
     for i in range(4):
         if attempt[i] in code:
             if attempt[i]==code[i]:
@@ -212,10 +261,10 @@ def play():
             newscreen()
             board()
             slowprint("Congratulations! You cracked the code!\n")
-            newscreen()
+            newscreen(t=2.5)
             break
         elif counter==10:
-            newscreen()
+            newscreen(t=2.5)
             codedisp = code
             board()
             slowprint('''Sorry, you have lost!
@@ -226,28 +275,28 @@ The correct code is displayed on the board!
         counter+=1
         newscreen()
         board_rules()
-        print('Level - ',levelname[op],'\nThe code can have the following digits:\n',[i for i in range(1,lvl[op])],sep='')
-        print('-'*105)
+        leveldisplay()
         slowprint("Attempt "+str(counter)+"\n")
         breaker()
 
 f='y'
-ynl = ['y','ye','yes','yep','yeah','yas','yus','yee','n','no','nope','na','nah']
+ynl = ['y','ye','yes','yep','yup''yeah','yas','yass','yasss','yee',
+       'n','no','nope','na','nah']
 while True:
     initialize()
     play()
     while True:
-        slowprint("Do you want to play again? (y/n): ")
+        slowprint("Do you want to play MasterMind again? (y/n): ")
         f = input().lower().strip()
         if f in ynl:
             break
         else:
             slowprint("\nERROR\n\n")      
-    if f in ynl[:8]:
+    if f in ynl[:9]:
         newscreen()
         continue
     else:
         newscreen()
-        slowprint("Thank you for playing MasterMind!")
+        print("Thank you for playing MasterMind!")
         sleep(5)
         break
