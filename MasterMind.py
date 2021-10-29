@@ -301,7 +301,7 @@ while True:
             break
         else:
             slowprint("\nERROR\n\n")      
-    if f in ynl[:9]:
+    if f in ynl[:10]:
         newscreen()
         continue
     else:
