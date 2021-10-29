@@ -256,7 +256,7 @@ def breaker():
                    else:
                       if temp.count('W') != len(attemptdict[i]):
                          temp.append('W')
-          pegsd[i] = sorted(temp)[:len(j)]
+          pegsd[i] = sorted(temp)[:len(attemptdict[i])]
 
     for i in pegsd.values():
           pegs.extend(i)
