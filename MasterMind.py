@@ -30,14 +30,25 @@ def slowprint(s,t=0.035):
       if isIDLE():
          sleep(t)
 
+def createDict(l):
+    d = {}
+    for i in range(4):
+       temp = []
+       for j in range(4):
+          if l[i]==l[j]:
+             temp.append(j)
+       d[l[i]] = temp
+
+    return d
+
 def leveldisplay():
      print('Level - ',levelname[op],'\nThe code can have the following digits:\n',valid,sep='')
      print('-'*105)
 
 slowprint('Welcome to MasterMind, The classic code-cracking game!\n',0.02)
 print('-'*105)
-#MAKE SLOW
-print('''1. The code-maker (Computer) will generate a 4 digit code (X X X X) based on the chosen level.
+
+slowprint('''1. The code-maker (Computer) will generate a 4 digit code (X X X X) based on the chosen level.
 2. The code-breaker (You) has to break this code,
    by duplicating its exact digits and positions.
 3. After every attempt,
@@ -106,12 +117,7 @@ Enter your choice: '''
     slowprint("The code has been generated! Start Cracking!\n")
 
 def board_rules():
-    global codedisp
-    print('-'*105)
-    for i in plist:
-        if i==['R','R','R','R']:
-            codedisp = code
-            
+    print('-'*105)            
     print('┌───────┬─────┬─────┬─────┬─────┐')
     print('│ Code: │',end='')
     
@@ -171,11 +177,7 @@ def board_rules():
     print('-'*105)
 
 def board():
-    global codedisp
-    print('-'*105)
-    for i in plist:
-        if i==['R','R','R','R']:
-            codedisp = code        
+    print('-'*105)    
     print('┌───────┬─────┬─────┬─────┬─────┐')
     print('│ Code: │',end='')
     for i in codedisp:
@@ -195,7 +197,7 @@ def board():
     
 def breaker():
     global alist, plist
-    pegs = ['-','-','-','-']
+    pegs = []
     while True:
         slowprint("\nYour Attempt: ",0.02)
         ip = input()
@@ -238,49 +240,54 @@ def breaker():
             alist[counter-1]=attempt
             break
    
-    #use dictionaries
-    
-    for i in range(4):
-        if attempt[i] in code:
-            if attempt[i]==code[i]:
-                pegs[i] = 'R'
-            else:
-                pegs[i] = 'W'
+    attemptdict = createDict(attempt)
+    codedict = createDict(code)
+    pegsd = {}
+
+    for i,j in codedict.items():
+          temp = []
+          if i in attemptdict.keys():
+             for a in j:
+                if temp.count('R') != len(j):
+                   if a in attemptdict[i]:
+                         temp.append('R')
+                   else:
+                      if temp.count('W') != len(attemptdict[i]):
+                         temp.append('W')
+          pegsd[i] = sorted(temp)[:len(j)]
+
+    for i in pegsd.values():
+          pegs.extend(i)
+
     r.shuffle(pegs)
-    for i in range(4):
-        if pegs[i]=='-':
-            pegs=list('-')+pegs[:i]+pegs[i+1:]
+      
+    while len(pegs) != 4:
+          pegs.insert(0,'-')
+          
     plist[counter-1]=pegs
 
 def play():
     global codedisp,counter
     coder()
-    print(code) #REMOVE
     while True:
-        if code in alist:
+        if code in alist or counter==10:
             newscreen()
-            board()
-            slowprint("Congratulations! You cracked the code!\n")
-            newscreen(t=2.5)
-            break
-        elif counter==10:
-            newscreen(t=2.5)
             codedisp = code
             board()
-            slowprint('''Sorry, you have lost!
-The correct code is displayed on the board!
-''')
-            newscreen()
+            if code in alist:
+               slowprint("Congratulations!\nYou cracked the code in only "+str(counter)+" attempts!\n")
+            else:
+               slowprint("Sorry, you have lost!\nThe correct code is displayed on the board!\n")
+            newscreen(t=2.5)
             break
         counter+=1
         newscreen()
         board_rules()
         leveldisplay()
-        slowprint("Attempt "+str(counter)+"\n")
+        slowprint("Attempt "+str(counter)+":\n")
         breaker()
 
-f='y'
-ynl = ['y','ye','yes','yep','yup''yeah','yas','yass','yasss','yee',
+ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
        'n','no','nope','na','nah']
 while True:
     initialize()
