@@ -38,7 +38,6 @@ def createDict(l):
           if l[i]==l[j]:
              temp.append(j)
        d[l[i]] = temp
-
     return d
 
 def leveldisplay():
@@ -61,7 +60,7 @@ slowprint('''1. The code-maker (Computer) will generate a 4 digit code (X X X X)
 print('-'*105)
 
 valid = []
-lvl = {1:6,2:7,3:8,4:9}
+lvl = {1:7,2:8,3:9,4:10}
 levelname = {1:"Easy",2:"Medium",3:"Difficult",4:"Insane"}
 code,codedisp,plist,alist,op,counter=[],[],[],[],'',0
 def initialize():
