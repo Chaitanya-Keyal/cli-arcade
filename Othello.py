@@ -1,6 +1,9 @@
-import time
 import random
+import os
+import sys
+import time
 import copy
+
 ulcorner = '┌'
 drcorner = '┘'
 hedge = '─'
@@ -18,6 +21,27 @@ dcnt = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8}
 
 board = []
 marker = []
+
+def isIDLE():
+   if "idlelib" in sys.modules:
+      return True
+   else:
+      return False
+
+def newscreen(n=105,t=0.6):
+    print("\nLoading",end='')
+    for i in range(3):
+        sys.stdout.write('.')
+        sys.stdout.flush()
+        time.sleep(t)
+    print()
+    if isIDLE():
+        print('-'*n)
+    else:
+        if os.name == 'posix':
+            os.system('clear')
+        else:
+            os.system('cls')
 
 def Legend():
     pass
@@ -470,4 +494,24 @@ def End(e1,e2):
         for j in range(8):
             marker[i][j] = 0
 
-Play()
+ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
+       'n','no','nope','na','nah']
+
+def Oth():
+    while True:
+        Play()
+        while True:
+            print("Do you want to play Othello again? (y/n): ")
+            f = input().lower().strip()
+            if f in ynl:
+                break
+            else:
+                print("\nERROR\n\n")      
+        if f in ynl[:10]:
+            newscreen()
+            continue
+        else:
+            newscreen()
+            print("Thank you for playing Othello!")
+            time.sleep(5)
+            break

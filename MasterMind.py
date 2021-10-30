@@ -290,21 +290,24 @@ def play():
 
 ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
        'n','no','nope','na','nah']
-while True:
-    initialize()
-    play()
+
+
+def Cry():
     while True:
-        slowprint("Do you want to play MasterMind again? (y/n): ")
-        f = input().lower().strip()
-        if f in ynl:
-            break
+        initialize()
+        play()
+        while True:
+            slowprint("Do you want to play MasterMind again? (y/n): ")
+            f = input().lower().strip()
+            if f in ynl:
+                break
+            else:
+                slowprint("\nERROR\n\n")      
+        if f in ynl[:10]:
+            newscreen()
+            continue
         else:
-            slowprint("\nERROR\n\n")      
-    if f in ynl[:10]:
-        newscreen()
-        continue
-    else:
-        newscreen()
-        print("Thank you for playing MasterMind!")
-        time.sleep(5)
-        break
+            newscreen()
+            print("Thank you for playing MasterMind!")
+            time.sleep(5)
+            break
