@@ -28,7 +28,7 @@ while True:
         if a == 1:
             TicTacToe.letsplay()
         elif a == 2:
-            MasterMind.MM()
+            MasterMind.PlayGame()
         elif a == 3:
             Othello.Oth()
 
