@@ -175,7 +175,7 @@ def mainGame_code_vs1():
                     cho = int(input("\nAlready entered. Enter different position : "))
                     print()
                     if Position_Check(cho):                   
-                        player,Game=ext(cho,playe,Symbolr)
+                        player,Game=ext(cho,player,Symbol)
                         break
         else:
             while True:
