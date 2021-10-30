@@ -44,12 +44,11 @@ def leveldisplay():
      print('Level - ',levelname[op],'\nThe code can have the following digits:\n',valid,sep='')
      print('-'*105)
 
-
-
 valid = []
 lvl = {1:7,2:8,3:9,4:10}
 levelname = {1:"Easy",2:"Medium",3:"Difficult",4:"Insane"}
-code,codedisp,plist,alist,op,counter=[],[],[],[],'',0
+code,codedisp,valid,plist,alist,op,counter=[],[],[],[],[],'',0
+
 def initialize():
     slowprint('Welcome to MasterMind, The classic code-cracking game!\n',0.02)
     print('-'*105)
@@ -293,22 +292,39 @@ ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
        'n','no','nope','na','nah']
 
 
-def MM():
-    while True:
-        initialize()
-        play()
-        while True:
-            slowprint("Do you want to play MasterMind again? (y/n): ")
-            f = input().lower().strip()
-            if f in ynl:
-                break
-            else:
-                slowprint("\nERROR\n\n")      
-        if f in ynl[:10]:
-            newscreen()
-            continue
-        else:
-            newscreen()
-            print("Thank you for playing MasterMind!")
-            time.sleep(5)
-            break
+def PlayGame():
+   slowprint('Welcome to MasterMind, The classic code-cracking game!\n',0.02)
+   print('-'*105)
+   slowprint('''1. The code-maker (Computer) will generate a 4 digit code (X X X X) based on the chosen level.
+2. The code-breaker (You) has to break this code,
+   by duplicating its exact digits and positions.
+3. After every attempt,
+   clues will be given on the left side of the board, indicated by 2 pegs:
+\ti.  White Peg (W) - For every correct digit that is placed in the wrong position.
+\tii. Red Peg (R)   - For every correct digit that is placed in the correct position as well.
+4. A total of 10 attempts are allowed before the game is over, and the code is revealed.
+5. The Aim of the game is to break the code with the least attempts.
+''')
+   print('-'*105)
+   
+   while True:
+       initialize()
+       play()
+       while True:
+           slowprint("Do you want to play MasterMind again? (y/n): ")
+           f = input().lower().strip()
+           if f in ynl:
+               break
+           else:
+               slowprint("\nERROR\n\n")      
+       if f in ynl[:10]:
+           newscreen()
+           continue
+       else:
+           newscreen()
+           print("Thank you for playing MasterMind!\nGame created by: Chaitanya Keyal")
+           time.sleep(5)
+           break
+         
+PlayGame()
+
