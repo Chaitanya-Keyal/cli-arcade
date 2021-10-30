@@ -1,4 +1,4 @@
-import random as r
+import random
 import os
 import sys
 from time import sleep
@@ -111,7 +111,7 @@ Enter your choice: '''
          break
     valid = [i for i in range(1,lvl[op])]
     for i in range(4):
-        code.append(r.choice(valid))
+        code.append(random.choice(valid))
     print('-'*45)
     slowprint("The code has been generated! Start Cracking!\n")
 
@@ -260,7 +260,7 @@ def breaker():
     for i in pegsd.values():
           pegs.extend(i)
 
-    r.shuffle(pegs)
+    random.shuffle(pegs)
       
     while len(pegs) != 4:
           pegs.insert(0,'-')
