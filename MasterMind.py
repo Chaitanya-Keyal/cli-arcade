@@ -1,7 +1,7 @@
 import random
 import os
 import sys
-from time import sleep
+import time
 
 def isIDLE():
    if "idlelib" in sys.modules:
@@ -14,7 +14,7 @@ def newscreen(n=105,t=0.6):
     for i in range(3):
         sys.stdout.write('.')
         sys.stdout.flush()
-        sleep(t)
+        time.sleep(t)
     print()
     if isIDLE():
         print('-'*n)
@@ -28,7 +28,7 @@ def slowprint(s,t=0.035):
    for i in s:
       print(i,end='')
       if isIDLE():
-         sleep(t)
+         time.sleep(t)
 
 def createDict(l):
     d = {}
@@ -106,7 +106,7 @@ Enter your choice: '''
          slowprint("ERROR")
          print("\n\nInvalid Choice! (Enter 1, 2, 3 or 4)")
          print('-'*45)
-         sleep(1)
+         time.sleep(1)
       else:
          break
     valid = [i for i in range(1,lvl[op])]
@@ -214,14 +214,14 @@ def breaker():
            slowprint("ERROR")
            print("\n\nInvalid Attempt! Please enter digits only!")
            print('-'*105)
-           sleep(1)
+           time.sleep(1)
            continue
         if len(temp) != 4:
            print('-'*105)
            slowprint("ERROR")
            print("\n\nInvalid Attempt! Please enter exactly 4 digits!")
            print('-'*105)
-           sleep(1)
+           time.sleep(1)
            continue
         attempt = []
         for i in temp:
@@ -235,7 +235,7 @@ def breaker():
            print("\n\nInvalid Attempt! Please enter valid digits according to level!")
            print('-'*105)
            leveldisplay()
-           sleep(1)
+           time.sleep(1)
            continue
         else:
             alist[counter-1]=attempt
@@ -306,5 +306,5 @@ while True:
     else:
         newscreen()
         print("Thank you for playing MasterMind!")
-        sleep(5)
+        time.sleep(5)
         break
