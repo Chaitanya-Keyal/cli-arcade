@@ -109,10 +109,10 @@ Enter your choice: '''
          sleep(1)
       else:
          break
-    for i in range(4):
-        code.append(r.choice([i for i in range(1,lvl[op])]))
-    print('-'*45)
     valid = [i for i in range(1,lvl[op])]
+    for i in range(4):
+        code.append(r.choice(valid))
+    print('-'*45)
     slowprint("The code has been generated! Start Cracking!\n")
 
 def board_rules():
