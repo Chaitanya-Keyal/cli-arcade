@@ -1,5 +1,6 @@
 import time
 import random
+import copy
 ulcorner = '┌'
 drcorner = '┘'
 hedge = '─'
@@ -11,67 +12,91 @@ vedge = '│'
 plus =  '┼'
 rplus = '├'
 uplus = '┴'
-
+player = 0
 pieces = {-1:"\u25CB",0:" ",1:"\u25CF"} #Symbol for the two colors
 dcnt = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8}
 
 board = []
 marker = []
 
-def Legend(line):
-    if line == 0:
-        return (" "*5 + 'Legend')
-    elif line == 2:
-        return (' '*5 + '1. [ ] - Coin placed')
-    elif line == 3:
-        return (' '*5 + '2. < > - Coin flipped')
-    elif line == 4:
-         return (' '*5 + '3. ( ) - Coin on other side')
-    return ""
+def Legend():
+    pass
 
-def Print():
-    s = ""
-    s += " "+ ulcorner
-
-    for i in range(7):
-        s += hedge*3 + dplus
-    s += hedge*3 + urcorner + '\n'
+def Print(copy):
     line = 0
-    for i in range(8):
-        s += str(i+1)
-        for j in range(8):
-            c = pieces[board[i][j]]
-            if marker[i][j] == 1:
-                s += vedge + '<' + c +'>'  #Flipped Piece Indicator
-            elif marker[i][j] == 3:
-                s += vedge + '[' + c +']'
-            elif marker[i][j] == 2:
-                s += vedge + '(' + c +')'
-            else:
-                s += vedge + ' ' + c +' '
-        s += vedge 
-        s += Legend(line)
-        s += '\n'
-        line += 1
-        if i == 7:
-            continue
-        s += ' '
-        s += rplus + hedge*3 
-        for j in range(7):
-            s += plus + hedge*3 
-        s += lplus
-        s += Legend(line)
-        line += 1
-        s += '\n'
+    def Line(line):
+        space = 8
+        if line == 0:
+            s = ""
+            s += " "+ ulcorner
+            s += (hedge*3 + dplus)*7 + hedge*3 + urcorner
 
-    s += ' ' + dlcorner + hedge*3 
-    for j in range(7):
-        s += uplus + hedge*3 
-    s += drcorner + '\n'
-    s += ' '*3
-    for i in range(8):
-        s += chr(ord('A')+i) + ' '*3
-    print(s)
+            s += ' '*space
+            s += " "+ ulcorner
+            s += (hedge*3 + dplus)*7 + hedge*3 + urcorner
+            return s
+            
+        elif line == 16:
+            s = ' '
+            s += dlcorner + hedge*3 + (uplus + hedge*3)*7 + drcorner
+
+            s += ' '*space + ' '
+            s += dlcorner + hedge*3 + (uplus + hedge*3)*7 + drcorner
+            return s
+
+        elif line == 17:
+            s = '   '
+            for i in range(8):
+                s += chr(ord('A')+i) + ' '*3
+
+            s += ' '*space + '  '
+            for i in range(8):
+                s += chr(ord('A')+i) + ' '*3
+            return s
+
+        elif line % 2 == 1:
+            s = ""
+            i = (line - 1)//2
+            s += str(i+1)
+            for j in range(8):
+                c = pieces[copy[i][j]]
+                if marker[i][j] == 1:
+                    s += vedge + '<' + c +'>'  #Flipped Piece Indicator
+                elif marker[i][j] == 2:
+                    s += vedge + '[' + c +']'
+                elif marker[i][j] == 3:
+                    s += vedge + '(' + pieces[board[i][j]] +')'
+                else:
+                    s += vedge + ' ' + c +' '
+
+            s += vedge 
+            if line == 7 or line == 9:
+                s += ' '*(space//2 - 1) + '⟶'*1 + ' '*(space//2 )
+            else:
+                s += ' '*space
+
+            s += str(i+1)
+            for j in range(8):
+                c = pieces[board[i][j]]
+                s += vedge + ' ' + c +' '
+            s += vedge 
+            return s
+
+        elif line %2 == 0:
+            s = ' '
+            s += rplus + hedge*3 + (plus + hedge*3)*7 + lplus
+            if line == 8:
+                s += ' '*(space//2 - 1) + '⟶'*1 + ' '*(space//2 )
+            else:
+                s += ' '*space
+            s += ' '
+            s += rplus + hedge*3 + (plus + hedge*3)*7 + lplus
+            return s
+    
+    b = ''
+    for i in range(18):
+        b += Line(i) + '\n'
+    print(b)
     print('-'*70)
 
 def move(p,a,check):
@@ -266,7 +291,7 @@ You can chose any of the 3 modes:
 def Multiplayer():
     player = -1
     Player = 1
-    Print()
+    Print(board)
     while True:
         if player == -1:
             Player = 1
@@ -296,11 +321,11 @@ def Multiplayer():
                 except:
                     print("Invalid Input. Try again")
                     print()
-
+            lcopy = copy.deepcopy(board)
             if move((px,py),player,False):
                 #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
                 print()
-                Print()
+                Print(lcopy)
                 time.sleep(0.3)
                 break
             else:
@@ -313,7 +338,7 @@ def Multiplayer():
 def Singleplayer():
     player = -1
     Player = 'Player'
-    Print()
+    Print(board)
     while True:
         if player == -1:
             Player = 'Player'
@@ -336,10 +361,11 @@ def Singleplayer():
             while True:
                 px = random.randint(0,7)
                 py = random.randint(0,7)
+                lcopy = copy.deepcopy(board)
                 if move((px,py),player,False):
                     print('%s (%s) played: %s%s' % (Player,pieces[player],chr(ord('A')+py),px+1))
                     print()
-                    Print()
+                    Print(lcopy)
                     break
                 else:
                     continue
@@ -361,11 +387,11 @@ def Singleplayer():
                 except:
                     print("Invalid Input. Try again")
                     print()
-
+            lcopy = copy.deepcopy(board)
             if move((px,py),player,False):
                 #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
                 print()
-                Print()
+                Print(lcopy)
                 time.sleep(0.3)
                 break
             else:
@@ -385,7 +411,7 @@ def Auto():
 
     player = -1
     Player = 1
-    Print()
+    Print(board)
     while True:
         if player == -1:
             Player = 1
@@ -404,10 +430,11 @@ def Auto():
         while True:
             px = random.randint(0,7)
             py = random.randint(0,7)
+            lcopy = copy.deepcopy(board)
             if move((px,py),player,False):
                 print('Bot %s (%s) played: %s%s' % (str(Player),pieces[player],chr(ord('A')+py),px+1))
                 print()
-                Print()
+                Print(lcopy)
                 time.sleep(sleep)
                 break
             else:
@@ -442,6 +469,5 @@ def End(e1,e2):
     for i in range(8):
         for j in range(8):
             marker[i][j] = 0
-    Print()
 
 Play()
