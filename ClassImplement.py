@@ -4,6 +4,7 @@ import sys
 import time
 import copy
 
+print("Helooooooooooo")
 def slowprint(s,t=0.035):
     for i in s:
         print(i,end='')
