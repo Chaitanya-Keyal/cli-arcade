@@ -4,7 +4,6 @@ import sys
 import time
 import copy
 
-print("Helooooooooooo")
 def slowprint(s,t=0.035):
     for i in s:
         print(i,end='')
@@ -55,13 +54,21 @@ class Othello:
         rplus = '├'
         uplus = '┴'
         line = 0
+        ct = 0
+        for i in range(8):
+            for j in range(8):
+                if board[i][j] != 0:
+                    ct += 1
+
         def Line(line):
             space = 8
             if line == 0:
                 s = ""
                 s += " "+ ulcorner
                 s += (hedge*3 + dplus)*7 + hedge*3 + urcorner
-    
+                if ct == 4:
+                    return s
+
                 s += ' '*space
                 s += " "+ ulcorner
                 s += (hedge*3 + dplus)*7 + hedge*3 + urcorner
@@ -70,7 +77,8 @@ class Othello:
             elif line == 16:
                 s = ' '
                 s += dlcorner + hedge*3 + (uplus + hedge*3)*7 + drcorner
-    
+                if ct == 4:
+                    return s
                 s += ' '*space + ' '
                 s += dlcorner + hedge*3 + (uplus + hedge*3)*7 + drcorner
                 return s
@@ -79,7 +87,8 @@ class Othello:
                 s = '   '
                 for i in range(8):
                     s += chr(ord('A')+i) + ' '*3
-    
+                if ct == 4:
+                    return s
                 s += ' '*space + '  '
                 for i in range(8):
                     s += chr(ord('A')+i) + ' '*3
@@ -101,8 +110,10 @@ class Othello:
                         s += vedge + ' ' + c +' '
     
                 s += vedge 
+                if ct == 4:
+                    return s
                 if line == 7 or line == 9:
-                    s += ' '*(space//2 - 1) + '⟶'*1 + ' '*(space//2 )
+                    s += ' '*(space//2 - 1) + '→'*1 + ' '*(space//2 )
                 else:
                     s += ' '*space
     
@@ -116,8 +127,10 @@ class Othello:
             elif line %2 == 0:
                 s = ' '
                 s += rplus + hedge*3 + (plus + hedge*3)*7 + lplus
+                if ct == 4:
+                    return s
                 if line == 8:
-                    s += ' '*(space//2 - 1) + '⟶'*1 + ' '*(space//2 )
+                    s += ' '*(space//2 - 1) + '→'*1 + ' '*(space//2 )
                 else:
                     s += ' '*space
                 s += ' '
@@ -127,6 +140,7 @@ class Othello:
         b = ''
         for i in range(18):
             b += Line(i) + '\n'
+
         print(b)
         print('-'*70)
     
@@ -135,6 +149,7 @@ class Othello:
         px,py = p
         if board[px][py] != 0:
             return False
+
         for i in range(8):
             for j in range(8):
                 marker[i][j] = 0
@@ -320,10 +335,10 @@ class Othello:
             self.Auto()
     
     def Multiplayer(self):
+        self.Print(self.board)
         board,dcnt,pieces = self.board,self.dcnt,self.pieces
         player = -1
         Player = 1
-        self.Print(board)
         while True:
             if player == -1:
                 Player = 1
@@ -368,10 +383,10 @@ class Othello:
         self.End("Player 1","Player 2")
     
     def Singleplayer(self):
+        self.Print(self.board)
         board,dcnt,pieces = self.board,self.dcnt,self.pieces
         player = -1
         Player = 'Player'
-        self.Print(board)
         while True:
             if player == -1:
                 Player = 'Player'
@@ -435,6 +450,7 @@ class Othello:
         self.End("Player","Computer")
     
     def Auto(self):
+        self.Print(self.board)
         board,dcnt,pieces = self.board,self.dcnt,self.pieces
         while True:
             try:
@@ -445,7 +461,6 @@ class Othello:
     
         player = -1
         Player = 1
-        self.Print(board)
         while True:
             if player == -1:
                 Player = 1
