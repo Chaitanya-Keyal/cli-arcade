@@ -142,7 +142,6 @@ class Othello:
             b += Line(i) + '\n'
 
         print(b)
-        print('-'*70)
     
     def move(self,p,a,check):
         board,marker = self.board,self.marker
@@ -326,7 +325,9 @@ class Othello:
                     break
             except:
                 print("Invalid Selection!")
-    
+
+        print('-' * 80)
+        
         if a == 1:
             self.Multiplayer()
         elif a == 2:
@@ -372,8 +373,8 @@ class Othello:
                 if self.move((px,py),player,False):
                     #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
                     print()
+                    newscreen(n = 80, t = 0.15)
                     self.Print(lcopy)
-                    time.sleep(0.3)
                     break
                 else:
                     print("Not a valid move(refer rules)")
@@ -413,6 +414,7 @@ class Othello:
                     if self.move((px,py),player,False):
                         print('%s (%s) played: %s%s' % (Player,pieces[player],chr(ord('A')+py),px+1))
                         print()
+                        newscreen(n = 80, t = 0.15)
                         self.Print(lcopy)
                         break
                     else:
@@ -439,8 +441,8 @@ class Othello:
                 if self.move((px,py),player,False):
                     #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
                     print()
+                    newscreen(n = 80, t = 0.15)
                     self.Print(lcopy)
-                    time.sleep(0.3)
                     break
                 else:
                     print("Not a valid move(refer rules)")
@@ -454,7 +456,8 @@ class Othello:
         board,dcnt,pieces = self.board,self.dcnt,self.pieces
         while True:
             try:
-                sleep = int(input("Enter time(in ms) to wait between each move: ")) / 1000
+                sleep = int(input("Enter time(in ms) to wait between each move: ")) / 100
+                print('-' * 80)
                 break
             except:
                 print("Invalid time")
@@ -483,8 +486,8 @@ class Othello:
                 if self.move((px,py),player,False):
                     print('Bot %s (%s) played: %s%s' % (str(Player),pieces[player],chr(ord('A')+py),px+1))
                     print()
+                    newscreen(n = 80, t = (sleep/3))
                     self.Print(lcopy)
-                    time.sleep(sleep)
                     break
                 else:
                     continue
@@ -502,7 +505,10 @@ class Othello:
                     p1 += 1
                 elif board[i][j] == -1:
                     p2 += 1
-    
+        newscreen(n = 80, t = 0.15)
+        
+        # Print Final board
+        print('-' * 80)
         if (p1+p2) != 64 == 0:
             print("Game Ended- No Valid Moves left")
         else:
@@ -544,10 +550,20 @@ class Othello:
                 break
    
 class MasterMind:
-    valid = []
     lvl = {1:7,2:8,3:9,4:10}
     levelname = {1:"Easy",2:"Medium",3:"Difficult",4:"Insane"}
-    code,codedisp,valid,plist,alist,op,counter=[],[],[],[],[],'',0
+    def initialize(self):
+        global code,codedisp,plist,alist,op,counter,valid
+        code = []
+        valid = []
+        codedisp = ['X','X','X','X']
+        plist = []
+        alist = []
+        op = ''
+        for i in range(10):
+            plist.append(['-','-','-','-'])
+            alist.append(['-','-','-','-']) 
+        counter = 0
 
     def createDict(self,l):
         d = {}
@@ -562,20 +578,6 @@ class MasterMind:
     def leveldisplay(self):
          print('Level - ',self.levelname[op],'\nThe code can have the following digits:\n',valid,sep='')
          print('-'*105)
-    
-    
-    def initialize(self):
-        global code,codedisp,plist,alist,op,counter,valid
-        code = []
-        valid = []
-        codedisp = ['X','X','X','X']
-        plist = []
-        alist = []
-        op = ''
-        for i in range(10):
-            plist.append(['-','-','-','-'])
-            alist.append(['-','-','-','-']) 
-        counter = 0
     
     def getKey(self,v):
        for i,j in self.levelname.items():
