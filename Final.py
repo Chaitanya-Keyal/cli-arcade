@@ -35,7 +35,7 @@ while True:
         ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
        'n','no','nope','na','nah']
         while True:
-            print("Do you want to play MasterMind again? (y/n): ")
+            print("Do you want to play again? (y/n): ")
             f = input().lower().strip()
             if f in ynl:
                 break
@@ -44,5 +44,5 @@ while True:
         if f in ynl[:10]:
             continue
         else:
-            print("Thank you for playing MasterMind!")
+            print("Thank you for playing !")
             break

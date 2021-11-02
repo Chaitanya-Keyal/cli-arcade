@@ -46,15 +46,15 @@ def newscreen(n=105,t=0.6):
 def Legend():
     pass
 
-def Print(copy):
-    line = 0
+def Print(copy,st = False):
     def Line(line):
         space = 8
         if line == 0:
             s = ""
             s += " "+ ulcorner
             s += (hedge*3 + dplus)*7 + hedge*3 + urcorner
-
+            if st:
+                return s
             s += ' '*space
             s += " "+ ulcorner
             s += (hedge*3 + dplus)*7 + hedge*3 + urcorner
@@ -63,7 +63,8 @@ def Print(copy):
         elif line == 16:
             s = ' '
             s += dlcorner + hedge*3 + (uplus + hedge*3)*7 + drcorner
-
+            if st:
+                return s
             s += ' '*space + ' '
             s += dlcorner + hedge*3 + (uplus + hedge*3)*7 + drcorner
             return s
@@ -72,7 +73,8 @@ def Print(copy):
             s = '   '
             for i in range(8):
                 s += chr(ord('A')+i) + ' '*3
-
+            if st:
+                return s
             s += ' '*space + '  '
             for i in range(8):
                 s += chr(ord('A')+i) + ' '*3
@@ -82,24 +84,26 @@ def Print(copy):
             s = ""
             i = (line - 1)//2
             s += str(i+1)
-            for j in range(8):
-                c = pieces[copy[i][j]]
-                if marker[i][j] == 1:
-                    s += vedge + '<' + c +'>'  #Flipped Piece Indicator
-                elif marker[i][j] == 2:
-                    s += vedge + '[' + c +']'
-                elif marker[i][j] == 3:
-                    s += vedge + '(' + pieces[board[i][j]] +')'
+
+            if not st:
+                for j in range(8):
+                    c = pieces[copy[i][j]]
+                    if marker[i][j] == 1:
+                        s += vedge + '<' + c +'>'  #Flipped Piece Indicator
+                    elif marker[i][j] == 2:
+                        s += vedge + '[' + c +']'
+                    elif marker[i][j] == 3:
+                        s += vedge + '(' + pieces[board[i][j]] +')'
+                    else:
+                        s += vedge + ' ' + c +' '
+
+                s += vedge 
+                if line == 7 or line == 9:
+                    s += ' '*(space//2 - 1) + '⟶'*1 + ' '*(space//2 )
                 else:
-                    s += vedge + ' ' + c +' '
+                    s += ' '*space
+                s += str(i+1)
 
-            s += vedge 
-            if line == 7 or line == 9:
-                s += ' '*(space//2 - 1) + '⟶'*1 + ' '*(space//2 )
-            else:
-                s += ' '*space
-
-            s += str(i+1)
             for j in range(8):
                 c = pieces[board[i][j]]
                 s += vedge + ' ' + c +' '
@@ -109,6 +113,9 @@ def Print(copy):
         elif line %2 == 0:
             s = ' '
             s += rplus + hedge*3 + (plus + hedge*3)*7 + lplus
+            if st:
+                return s
+
             if line == 8:
                 s += ' '*(space//2 - 1) + '⟶'*1 + ' '*(space//2 )
             else:
@@ -275,12 +282,16 @@ def checkValid(player):
 def Play():
 
     #Initializing Board
+    global board,marker
+    board = []
+    marker = []
     for i in range(8):
         board.append([])
         marker.append([])
         for j in range(8):
             board[i].append(0)
             marker[i].append(0)
+
     board[3][3],board[4][4] = -1,-1
     board[3][4],board[4][3] = 1,1   
 
@@ -315,7 +326,7 @@ You can chose any of the 3 modes:
 def Multiplayer():
     player = -1
     Player = 1
-    Print(board)
+    Print(board,True)
     while True:
         if player == -1:
             Player = 1
@@ -362,7 +373,7 @@ def Multiplayer():
 def Singleplayer():
     player = -1
     Player = 'Player'
-    Print(board)
+    Print(board,True)
     while True:
         if player == -1:
             Player = 'Player'
@@ -435,7 +446,7 @@ def Auto():
 
     player = -1
     Player = 1
-    Print(board)
+    Print(board,True)
     while True:
         if player == -1:
             Player = 1
@@ -494,6 +505,8 @@ def End(e1,e2):
         for j in range(8):
             marker[i][j] = 0
 
+    Print(board,True)
+
 ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
        'n','no','nope','na','nah']
 
@@ -513,5 +526,6 @@ def Oth():
         else:
             newscreen()
             print("Thank you for playing Othello!")
-            time.sleep(5)
             break
+
+Oth()
