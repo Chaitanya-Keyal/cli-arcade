@@ -98,7 +98,10 @@ Enter your choice: '''
 
 def vs1():   
     rulesTXT()
-    newscreen()
+    if isIDLE():
+        newscreen()
+    else:
+        newscreen(t=2)
     print("\nPlayer 1 [X] --- Player 2 [O]\n")
     print('-'*75) 
     print('Let the games begin!!!')
@@ -259,18 +262,16 @@ def mainGame_code_vs1():
 
 def Disp_Board():
     print()
-    print(" %c | %c | %c " % (drawboard[1],drawboard[2],drawboard[3]),end='')
-    print("\t\t\t 1 | 2 | 3 ")
-    print("___|___|___",end='')
-    print("\t\t\t___|___|___")
-    print(" %c | %c | %c " % (drawboard[4],drawboard[5],drawboard[6]),end='')
-    print("\t\t\t 4 | 5 | 6 ")
-    print("___|___|___",end='')
-    print("\t\t\t___|___|___")
-    print(" %c | %c | %c " % (drawboard[7],drawboard[8],drawboard[9]),end='')
-    print("\t\t\t 7 | 8 | 9 ")
-    print("   |   |   ",end='')
-    print("\t\t\t   |   |   ")
+    print(" %c │ %c │ %c " % (drawboard[1],drawboard[2],drawboard[3]),end='')
+    print("\t\t\t 1 │ 2 │ 3 ")
+    print("───┼───┼───",end='')
+    print("\t\t\t───┼───┼───")
+    print(" %c │ %c │ %c " % (drawboard[4],drawboard[5],drawboard[6]),end='')
+    print("\t\t\t 4 │ 5 │ 6 ")
+    print("───┼───┼───",end='')
+    print("\t\t\t───┼───┼───")
+    print(" %c │ %c │ %c " % (drawboard[7],drawboard[8],drawboard[9]),end='')
+    print("\t\t\t 7 │ 8 │ 9 ")
     print()
     
 def Position_Check(x):    
