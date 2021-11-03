@@ -44,7 +44,6 @@ def leveldisplay():
      print('Level - ',levelname[op],'\nThe code can have the following digits:\n',valid,sep='')
      print('-'*105)
 
-valid = []
 lvl = {1:7,2:8,3:9,4:10}
 levelname = {1:"Easy",2:"Medium",3:"Difficult",4:"Insane"}
 code,codedisp,valid,plist,alist,op,counter=[],[],[],[],[],'',0
@@ -86,7 +85,7 @@ Enter your choice: '''
       try:
          op = int(op)
       except:
-         op = getKey(op.title())
+         op = getKey(op.title().strip())
       if op not in levelname:
          print('-'*45)
          slowprint("ERROR")
@@ -159,7 +158,7 @@ def board_rules():
                   out+= "\t\t\tplaced in the correct position as well.\n"
               else:
                   out+='\n'
-    print(out)
+    print(out,end='')
     print('-'*105)
 
 def board():
@@ -179,7 +178,7 @@ def board():
               out+=('└───────┴─────┴─────┴─────┴─────┘\n')
           else:
               out+=('├───────┼─────┼─────┼─────┼─────┤\n')
-    print(out)
+    print(out,end='')
     print('-'*105)
     
 def breaker():
@@ -277,7 +276,6 @@ def play():
 ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
        'n','no','nope','na','nah']
 
-
 def PlayGame():
    slowprint('Welcome to MasterMind, The classic code-cracking game!\n',0.02)
    print('-'*105)
@@ -311,5 +309,4 @@ def PlayGame():
            print("Thank you for playing MasterMind!\nGame created by: Chaitanya Keyal")
            time.sleep(5)
            break
-         
-
+PlayGame()

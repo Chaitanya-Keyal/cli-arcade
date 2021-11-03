@@ -3,7 +3,7 @@ import Othello
 import TicTacToe
 
 while True:
-    print("Welcoeme to the Arcade")
+    print("Welcome to the Arcade")
     print('''We offer 3 games:
 1. Tic Tac Toe
 2. MasterMind
@@ -26,7 +26,7 @@ while True:
             continue
 
         if a == 1:
-            TicTacToe.letsplay()
+            TicTacToe.PlayGame()
         elif a == 2:
             MasterMind.PlayGame()
         elif a == 3:
