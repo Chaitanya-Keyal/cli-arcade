@@ -623,5 +623,3 @@ def mainGame_code_CVP():
         print('-'*75)
         slowprint("Alas! The computer defeated you!\n")
         newscreen(t=1.5)
-
-PlayGame() #To be Deleted
