@@ -298,29 +298,48 @@ def Play():
     board[3][4],board[4][3] = 1,1   
 
     print('''Rules:
-<Blah Blah>
+1. The board will start with 2 black discs and 2 white discs at the centre of the board.
+2. The goal is to get the majority of colour discs on the board at the end of the game.
+3. One player plays black and the other white.
+4. Then the game alternates between white and black until:
+    i.  One player can not make a valid move to outflank the opponent.
+    ii. Both players have no valid moves.
+            *When a player has no valid moves, the turn is passed and the opponent continues.
+5. When both players have no valid moves, the game ends.
+6. The discs are counted and the player with the majority of their colour discs wins.
 ''')
     print('''Input Rules:
-Enter Input in the form - <Alphabet><Number>
-Eg: A1, C3, b4, g8
-<Conditions>
+1. Each move played HAS to "out-flank" at least one of the opponent's discs.
+   i.e. At least one of the opponent's disc has to get flipped
+2. A disc or row of discs is outflanked when it is surrounded at the ends by discs of the opposite color.
+3. A disc may outflank any number of discs in one or more rows in any direction (horizontal, vertical, diagonal).
+4. All the discs which are outflanked, i.e. surrounded by opposite colors at each end of the row, will be flipped.
+
+5. Enter Input in the form - <Alphabet><Number>
+   E.g. A1, C3, b4, g8
 ''')
     slowprint('''You can chose any of the 3 modes:
 1) Player vs Player
 2) Player vs Computer
 3) Computer vs Computer
+
 ''',t=0.02)
 #Option 3 is for observing if the code works without the hassle of giving 64 inputs 
     while True:
         try:
-            a = int(input("\nEnter mode: "))
+            a = int(input("Enter mode: "))
             if a > 3 or a < 1:
                 raise Exception("NO")
             else:
                 break
         except:
-            print("Invalid Selection! Enter (1, 2 or 3)")
+            print('-'*45)
+            slowprint("ERROR")
+            print("\n\nInvalid Selection! (Enter 1, 2 or 3)")
+            print('-'*45)
+            time.sleep(1)
 
+    print('-'*80)
     if a == 1:
         Multiplayer()
     elif a == 2:
@@ -359,8 +378,16 @@ def Multiplayer():
                         py = dcnt[s[0].upper()] - 1
                     break
                 except:
-                    print("Invalid Input. Try again")
-                    print()
+                    print('-'*60)
+                    slowprint("ERROR")
+                    print('''
+
+Invalid Input! Enter Input in the form - <Alphabet><Number>
+               E.g. A1, C3, b4, g8
+''')
+                    print('-'*60)
+                    time.sleep(1)
+                    
             lcopy = copy.deepcopy(board)
             if move((px,py),player,False):
                 #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
@@ -369,13 +396,21 @@ def Multiplayer():
                 Print(lcopy)
                 break
             else:
-                print("Not a valid move!\n")
-                print('''Input Rules:
-Enter Input in the form - <Alphabet><Number>
-Eg: A1, C3, b4, g8
-<Conditions>
+                print('-'*115)
+                slowprint("ERROR")
+                print('''
+
+Not a Valid Move!
+
+Input Rules:
+1. Each move played HAS to "out-flank" at least one of the opponent's discs.
+   i.e. At least one of the opponent's disc has to get flipped
+2. A disc or row of discs is outflanked when it is surrounded at the ends by discs of the opposite color.
+3. A disc may outflank any number of discs in one or more rows in any direction (horizontal, vertical, diagonal).
+4. All the discs which are outflanked, i.e. surrounded by opposite colors at each end of the row, will be flipped. 
 ''')
-                print()
+                print('-'*115)
+                time.sleep(1)
                 continue
         player *= -1
     End("Player 1","Player 2")
@@ -431,8 +466,16 @@ def Singleplayer():
                         py = dcnt[s[0].upper()] - 1
                     break
                 except:
-                    print("Invalid Input. Try again")
-                    print()
+                    print('-'*60)
+                    slowprint("ERROR")
+                    print('''
+
+Invalid Input! Enter Input in the form - <Alphabet><Number>
+               E.g. A1, C3, b4, g8
+''')
+                    print('-'*60)
+                    time.sleep(1)
+                    
             lcopy = copy.deepcopy(board)
             if move((px,py),player,False):
                 #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
@@ -441,13 +484,21 @@ def Singleplayer():
                 Print(lcopy)
                 break
             else:
-                print("Not a valid move!\n")
-                print('''Input Rules:
-Enter Input in the form - <Alphabet><Number>
-Eg: A1, C3, b4, g8
-<Conditions>
+                print('-'*115)
+                slowprint("ERROR")
+                print('''
+
+Not a Valid Move!
+
+Input Rules:
+1. Each move played HAS to "out-flank" at least one of the opponent's discs.
+   i.e. At least one of the opponent's disc has to get flipped
+2. A disc or row of discs is outflanked when it is surrounded at the ends by discs of the opposite color.
+3. A disc may outflank any number of discs in one or more rows in any direction (horizontal, vertical, diagonal).
+4. All the discs which are outflanked, i.e. surrounded by opposite colors at each end of the row, will be flipped. 
 ''')
-                print()
+                print('-'*115)
+                time.sleep(1)
                 continue
         player *= -1
     End("Player","Computer")
@@ -455,10 +506,14 @@ Eg: A1, C3, b4, g8
 def Auto():
     while True:
         try:
-            sleep = int(input("\nEnter time (in ms) to wait between each move: ")) / 100
+            sleep = int(input("Enter time (in ms) to wait between each move: ")) / 100
             break
         except:
-            print("Invalid time")
+            print('-'*45)
+            slowprint("ERROR")
+            print("\n\nInvalid Time! Enter digits only!")
+            print('-'*45)
+            time.sleep(1)
 
     player = -1
     Player = 1
