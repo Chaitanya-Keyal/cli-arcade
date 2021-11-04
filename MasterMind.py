@@ -264,7 +264,7 @@ def play():
                slowprint("Congratulations!\nYou cracked the code in only "+str(counter)+" attempts!\n")
             else:
                slowprint("Sorry, you have lost!\nThe correct code is displayed on the board!\n")
-            newscreen(t=2.5)
+            newscreen(t=2)
             break
         counter+=1
         newscreen()
@@ -307,6 +307,6 @@ def PlayGame():
        else:
            newscreen()
            print("Thank you for playing MasterMind!\nGame created by: Chaitanya Keyal")
-           time.sleep(5)
+           print('-'*35)
+           newscreen(n=35,t=1.5)
            break
-PlayGame()

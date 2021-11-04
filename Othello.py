@@ -22,6 +22,12 @@ dcnt = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8}
 board = []
 marker = []
 
+def slowprint(s,t=0.035):
+    for i in s:
+        print(i,end='')
+        if isIDLE():
+            time.sleep(t)
+
 def isIDLE():
    if "idlelib" in sys.modules:
       return True
@@ -42,9 +48,6 @@ def newscreen(n=105,t=0.6):
             os.system('clear')
         else:
             os.system('cls')
-
-def Legend():
-    pass
 
 def Print(copy,st = False):
     def Line(line):
@@ -99,7 +102,7 @@ def Print(copy,st = False):
 
                 s += vedge 
                 if line == 7 or line == 9:
-                    s += ' '*(space//2 - 1) + '⟶'*1 + ' '*(space//2 )
+                    s += ' '*(space//2 - 1) + '→'*1 + ' '*(space//2 )
                 else:
                     s += ' '*space
                 s += str(i+1)
@@ -117,7 +120,7 @@ def Print(copy,st = False):
                 return s
 
             if line == 8:
-                s += ' '*(space//2 - 1) + '⟶'*1 + ' '*(space//2 )
+                s += ' '*(space//2 - 1) + '→'*1 + ' '*(space//2 )
             else:
                 s += ' '*space
             s += ' '
@@ -128,7 +131,7 @@ def Print(copy,st = False):
     for i in range(18):
         b += Line(i) + '\n'
     print(b)
-    print('-'*70)
+    print('-'*80)
 
 def move(p,a,check):
     global board,marker
@@ -280,7 +283,6 @@ def checkValid(player):
     return False
 
 def Play():
-
     #Initializing Board
     global board,marker
     board = []
@@ -295,26 +297,29 @@ def Play():
     board[3][3],board[4][4] = -1,-1
     board[3][4],board[4][3] = 1,1   
 
-    print('''
-Rules:
+    print('''Rules:
+<Blah Blah>
+''')
+    print('''Input Rules:
 Enter Input in the form - <Alphabet><Number>
 Eg: A1, C3, b4, g8
-
-<Blah Blah>
-You can chose any of the 3 modes:
+<Conditions>
+''')
+    slowprint('''You can chose any of the 3 modes:
 1) Player vs Player
 2) Player vs Computer
 3) Computer vs Computer
-    ''') #Option 3 is for observing if the code works without the hassle of giving 64 inputs 
+''',t=0.02)
+#Option 3 is for observing if the code works without the hassle of giving 64 inputs 
     while True:
         try:
-            a = int(input("Enter mode: "))
+            a = int(input("\nEnter mode: "))
             if a > 3 or a < 1:
                 raise Exception("NO")
             else:
                 break
         except:
-            print("Invalid Selection!")
+            print("Invalid Selection! Enter (1, 2 or 3)")
 
     if a == 1:
         Multiplayer()
@@ -360,11 +365,16 @@ def Multiplayer():
             if move((px,py),player,False):
                 #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
                 print()
+                newscreen(n = 80, t = 0.15)
                 Print(lcopy)
-                time.sleep(0.3)
                 break
             else:
-                print("Not a valid move(refer rules)")
+                print("Not a valid move!\n")
+                print('''Input Rules:
+Enter Input in the form - <Alphabet><Number>
+Eg: A1, C3, b4, g8
+<Conditions>
+''')
                 print()
                 continue
         player *= -1
@@ -400,6 +410,7 @@ def Singleplayer():
                 if move((px,py),player,False):
                     print('%s (%s) played: %s%s' % (Player,pieces[player],chr(ord('A')+py),px+1))
                     print()
+                    newscreen(n = 80, t = 0.15)
                     Print(lcopy)
                     break
                 else:
@@ -426,11 +437,16 @@ def Singleplayer():
             if move((px,py),player,False):
                 #print(pieces[player],'played: %s%s' % (chr(ord('A')+py),px+1))
                 print()
+                newscreen(n = 80, t = 0.15)
                 Print(lcopy)
-                time.sleep(0.3)
                 break
             else:
-                print("Not a valid move(refer rules)")
+                print("Not a valid move!\n")
+                print('''Input Rules:
+Enter Input in the form - <Alphabet><Number>
+Eg: A1, C3, b4, g8
+<Conditions>
+''')
                 print()
                 continue
         player *= -1
@@ -439,7 +455,7 @@ def Singleplayer():
 def Auto():
     while True:
         try:
-            sleep = int(input("Enter time(in ms) to wait between each move: ")) / 1000
+            sleep = int(input("\nEnter time (in ms) to wait between each move: ")) / 100
             break
         except:
             print("Invalid time")
@@ -469,8 +485,8 @@ def Auto():
             if move((px,py),player,False):
                 print('Bot %s (%s) played: %s%s' % (str(Player),pieces[player],chr(ord('A')+py),px+1))
                 print()
+                newscreen(n = 80, t = (sleep/3))
                 Print(lcopy)
-                time.sleep(sleep)
                 break
             else:
                 continue
@@ -486,6 +502,8 @@ def End(e1,e2):
                 p1 += 1
             elif board[i][j] == -1:
                 p2 += 1
+
+    newscreen(n = 80, t = 0.15)
 
     if (p1+p2) != 64 == 0:
         print("Game Ended- No Valid Moves left")
@@ -510,22 +528,24 @@ def End(e1,e2):
 ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
        'n','no','nope','na','nah']
 
-def Oth():
+def PlayGame():
+    slowprint("Welcome to Othello!\n",0.02)
+    print('-'*80)
     while True:
         Play()
         while True:
-            print("Do you want to play Othello again? (y/n): ")
+            slowprint("Do you want to play Othello again? (y/n): ")
             f = input().lower().strip()
             if f in ynl:
                 break
             else:
-                print("\nERROR\n\n")      
+                slowprint("\nERROR\n\n")      
         if f in ynl[:10]:
             newscreen()
             continue
         else:
             newscreen()
-            print("Thank you for playing Othello!")
+            print("Thank you for playing Othello!\nGame created by: Pramit Pal")
+            print('-'*35)
+            newscreen(n=35,t=1.5)
             break
-
-Oth()

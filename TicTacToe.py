@@ -93,7 +93,8 @@ Enter your choice: '''
         else:
            newscreen()
            print("Thank you for playing Tic-Tac-Toe!\nGame created by: Nikhil Thomas Sojan")
-           time.sleep(5)
+           print('-'*40)
+           newscreen(n=40,t=1.5)
            break  
 
 def vs1():   
@@ -622,5 +623,3 @@ def mainGame_code_CVP():
         print('-'*75)
         slowprint("Alas! The computer defeated you!\n")
         newscreen(t=1.5)
-
-PlayGame()
