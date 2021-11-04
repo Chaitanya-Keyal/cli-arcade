@@ -408,8 +408,8 @@ def hard():
         elif(drawboard[1] == drawboard[2] and drawboard[3]==' ' and drawboard[1] == firstmark):
             drawboard[3]=secondmark
             
-        elif(drawboard[1] == drawboard[3] and drawboard[2]==' ' and drawboard[1] == firstmark):
-             drawboard[5]=secondmark
+        elif(drawboard[1] == drawboard[3] and drawboard[2]==' ' and drawboard[1] == firstmark):  #ERROR Fixed
+             drawboard[2]=secondmark
              
         elif(drawboard[2] == drawboard[3] and drawboard[1]==' ' and drawboard[3] == firstmark):
              drawboard[1]=secondmark
@@ -623,3 +623,5 @@ def mainGame_code_CVP():
         print('-'*75)
         slowprint("Alas! The computer defeated you!\n")
         newscreen(t=1.5)
+
+PlayGame() #To be Deleted
