@@ -147,7 +147,7 @@ def board_rules():
           else:
               out+='├───────┼─────┼─────┼─────┼─────┤'
               if i==1:
-                  out+= "\t2. Digits may or may not be be repeated.\n"
+                  out+= "\t2. Digits may or may not be repeated.\n"
               elif i==2:
                   out+= "\t\tX X X X\n"
               elif i==3:
