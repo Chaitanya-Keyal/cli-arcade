@@ -22,7 +22,7 @@ dcnt = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8}
 board = []
 marker = []
 
-def slowprint(s,t=0.035):
+def slowprint(s,t=0.025):
     for i in s:
         print(i,end='')
         if isIDLE():

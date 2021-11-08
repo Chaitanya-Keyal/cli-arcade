@@ -24,7 +24,7 @@ def newscreen(n=75,t=0.6):
         else:
             os.system('cls')
 
-def slowprint(s,t=0.035):
+def slowprint(s,t=0.025):
    for i in s:
       print(i,end='')
       if isIDLE():
