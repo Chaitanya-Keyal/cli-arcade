@@ -34,8 +34,10 @@ def PlayGame():
     global drawboard,type_,Game
     
     slowprint("Welcome to Tic-Tac-Toe!\n")
+    print()
     print('-'*25)
-    
+    print()
+
     ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
        'n','no','nope','na','nah']
     while True:
@@ -144,6 +146,7 @@ def vsComputer():
     
 def rulesTXT():
     if type_ == 2:
+        print()
         slowprint('''RULES FOR TIC-TAC-TOE (Multi-player):
 1. The game is played on a grid that's 3 squares by 3 squares.
 2. You are X, your friend is O. Players take turns putting their marks in empty squares.
@@ -151,14 +154,17 @@ def rulesTXT():
 4. When all 9 squares are full, the game is over. If no player has 3 marks in a row, the game ends in a tie.
 ''')
     else:
+        print()
         slowprint('''RULES FOR TIC-TAC-TOE (Single-player):
 1. The game is played on a grid that's 3 squares by 3 squares.
 2. Assume that you are X and the computer is O. Players take turns putting their marks in empty squares.
 3. The first player to get 3 of their marks in a row (up, down, across, or diagonally) is the winner.
 4. When all 9 squares are full, the game is over. If no player has 3 marks in a row, the game ends in a tie.
 ''')
-               
+
+    print()           
     print('-'*110)
+    print()
 
 def difficulty_choice():
     global diff

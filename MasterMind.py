@@ -278,7 +278,10 @@ ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
 
 def PlayGame():
    slowprint('Welcome to MasterMind, The classic code-cracking game!\n',0.02)
+   print()
    print('-'*105)
+   print()
+   
    slowprint('''1. The code-maker (Computer) will generate a 4 digit code (X X X X) based on the chosen level.
 2. The code-breaker (You) has to break this code,
    by duplicating its exact digits and positions.
@@ -289,8 +292,10 @@ def PlayGame():
 4. A total of 10 attempts are allowed before the game is over, and the code is revealed.
 5. The Aim of the game is to break the code with the least attempts.
 ''')
+   print()
    print('-'*105)
-   
+   print()
+
    while True:
        initialize()
        play()
