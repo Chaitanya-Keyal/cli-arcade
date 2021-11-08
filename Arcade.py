@@ -35,7 +35,6 @@ while True:
 
         MasterMind.newscreen(n=100)
         print('-'*100)
-        print()
         if a == 1:
             TicTacToe.PlayGame()
         elif a == 2:

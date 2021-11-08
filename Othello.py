@@ -297,8 +297,7 @@ def Play():
     board[3][3],board[4][4] = -1,-1
     board[3][4],board[4][3] = 1,1   
 
-    print('''
-Rules:
+    print('''Rules:
 1. The board will start with 2 black discs and 2 white discs at the centre of the board.
 2. The goal is to get the majority of colour discs on the board at the end of the game.
 3. One player plays black and the other white.
@@ -586,9 +585,7 @@ ynl = ['y','ye','yes','yep','yup','yeah','yas','yass','yasss','yee',
 
 def PlayGame():
     slowprint("Welcome to Othello!\n",0.02)
-    print()
     print('-'*80)
-    print()
     while True:
         Play()
         while True:
