@@ -508,9 +508,9 @@ def Auto():
         try:
             sleep = int(input("Enter time (in ms) to wait between each move: ")) / 100
             if sleep<0:
-                raise Exception("NegativeTime")
+                raise Exception("Negative Time")
             break
-        except "NegativeTime":
+        except Exception:
             print('-'*45)
             slowprint("ERROR")
             print("\n\nInvalid Time! Time has to be positive!")
