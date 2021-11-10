@@ -510,7 +510,7 @@ def Auto():
             if sleep<0:
                 raise Exception("NegativeTime")
             break
-        except NegativeTime:
+        except "NegativeTime":
             print('-'*45)
             slowprint("ERROR")
             print("\n\nInvalid Time! Time has to be positive!")
