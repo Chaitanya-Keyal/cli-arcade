@@ -507,7 +507,15 @@ def Auto():
     while True:
         try:
             sleep = int(input("Enter time (in ms) to wait between each move: ")) / 100
+            if sleep<0:
+                raise Exception("NegativeTime")
             break
+        except NegativeTime:
+            print('-'*45)
+            slowprint("ERROR")
+            print("\n\nInvalid Time! Time has to be positive!")
+            print('-'*45)
+            time.sleep(1)
         except:
             print('-'*45)
             slowprint("ERROR")
