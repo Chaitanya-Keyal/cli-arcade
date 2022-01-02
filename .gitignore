@@ -2,3 +2,4 @@
 __pycache__/MasterMind.cpython-39.pyc
 __pycache__/Othello.cpython-39.pyc
 __pycache__/TicTacToe.cpython-39.pyc
+*.pyc
